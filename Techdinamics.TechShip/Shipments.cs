@@ -10,6 +10,7 @@ namespace Techdinamics.TechShip
 	public class Shipments
 	{
 		const string baseUrl = "https://test-api-us.techship.io/api/v2/shipments/";
+		const int maxDegreeOfParallelism = 10;
 
 		private readonly static JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
 		{
@@ -108,7 +109,7 @@ namespace Techdinamics.TechShip
 			string duplicateHandling,
 			Shipment[] shipments)
 		{
-			Parallel.ForEach(shipments, async (shipment) =>
+			Parallel.ForEach(shipments, new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (shipment) =>
 			{
 				try
 				{
@@ -133,7 +134,7 @@ namespace Techdinamics.TechShip
 			string duplicateHandling,
 			Shipment[] shipments)
 		{
-			Parallel.ForEach(shipments, async (shipment) =>
+			Parallel.ForEach(shipments, new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (shipment) =>
 			{
 				try
 				{
