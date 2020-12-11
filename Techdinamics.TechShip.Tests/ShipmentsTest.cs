@@ -27,16 +27,16 @@ namespace Techdinamics.TechShip.Tests
 				ShipToCity = "NEW HAVEN",
 				ShipToStateProvince = "IN",
 				ShipToPhone = "11111111111",
-				Packages = new Dto.Request.Package[]
+				Packages = new Package[]
 				{
-					new Dto.Request.Package {
+					new Package {
 						Weight = 2,
 						BoxHeight = 1,
 						BoxLength = 12,
 						BoxWidth = 9,
-						Items = new Dto.Request.Item[]
+						Items = new Item[]
 						{
-							new Dto.Request.Item{
+							new Item{
 								Sku = "TST",
 								LotNumber = "LT1",
 								SerialNumber = "",
@@ -80,16 +80,16 @@ namespace Techdinamics.TechShip.Tests
 				ShipToCity = "NEW HAVEN",
 				ShipToStateProvince = "IN",
 				ShipToPhone = "11111111111",
-				Packages = new Dto.Request.Package[]
+				Packages = new Package[]
 				{
-					new Dto.Request.Package {
+					new Package {
 						Weight = 2,
 						BoxHeight = 1,
 						BoxLength = 12,
 						BoxWidth = 9,
-						Items = new Dto.Request.Item[]
+						Items = new Item[]
 						{
-							new Dto.Request.Item{
+							new Item{
 								Sku = "TST",
 								LotNumber = "LT1",
 								SerialNumber = "",
@@ -217,9 +217,9 @@ namespace Techdinamics.TechShip.Tests
 						BoxHeight = 1,
 						BoxLength = 12,
 						BoxWidth = 9,
-						Items = new Dto.Request.Item[]
+						Items = new Item[]
 						{
-							new Dto.Request.Item{
+							new Item{
 								Sku = "TST",
 								LotNumber = "LT1",
 								SerialNumber = "",
