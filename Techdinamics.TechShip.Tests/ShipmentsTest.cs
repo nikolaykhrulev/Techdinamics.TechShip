@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace Techdinamics.TechShip.Tests
 	{
 		const string _apiKey = "YOUR_API_KEY";
 		const string _secretKey = "YOUR_SECRET_KEY";
-
+		
 		[TestMethod]
 		public async Task RateShopShipment_Success()
 		{
@@ -62,6 +63,120 @@ namespace Techdinamics.TechShip.Tests
 			);
 
 			Assert.IsNotNull(result.ShipmentId);
+		}
+
+		[TestMethod]
+		public void RateShopShipment_BadRequest()
+		{
+			var shipment = new ShipmentRequest
+			{
+				Sequence = 1,
+				ShipToAddress1 = "123 SAMPLE STREET",
+				ShipToCountry = "US",
+				ShipToName = "JOHN SMITH",
+				ServiceCode = "GRD",
+				TransactionNumber = "123456789098765432101234567890987654321012345678909876543210123456789098765432101234567890987654321012345678909876543210123456789098765432101234567890987654321012345678909876543210123456789098765432101234567890987654321012345678909876543210123456789098765",
+				ShipToPostal = "46774",
+				ShipToCity = "NEW HAVEN",
+				ShipToStateProvince = "IN",
+				ShipToPhone = "11111111111",
+				Packages = new Package[]
+				{
+					new Package {
+						Weight = 2,
+						BoxHeight = 1,
+						BoxLength = 12,
+						BoxWidth = 9,
+						Items = new Item[]
+						{
+							new Item{
+								Sku = "TST",
+								LotNumber = "LT1",
+								SerialNumber = "",
+								Description = "TEST",
+								Description2 = "",
+								Quantity = 1,
+								UnitPrice = 1,
+								ExpirationDate = "2099-07-19T17:12:02.731Z",
+								Uom = "Each",
+								Supplier = "",
+								CountryOfOrigin = "US"
+							}
+						}
+					}
+				},
+				ClientCode = "Test",
+				Terms = "SHIPPER"
+			};
+
+			Assert.ThrowsExceptionAsync<ApplicationException>(
+				async () => await new Shipments(_apiKey, _secretKey).RateShop(
+					duplicateHandling: "2",
+					shipment: shipment
+				)
+			);
+		}
+
+		[TestMethod]
+		public void RateShopShipment_WithoutRequiredProp()
+		{
+			var shipment = new ShipmentRequest
+			{
+				Sequence = 1,
+				ShipToAddress1 = "123 SAMPLE STREET",
+				ShipToCountry = "US",
+				ShipToName = "JOHN SMITH",
+				ServiceCode = "GRD",
+				ShipToPostal = "46774",
+				ShipToCity = "NEW HAVEN",
+				ShipToStateProvince = "IN",
+				ShipToPhone = "11111111111",
+				Packages = new Package[]
+				{
+					new Package {
+						Weight = 2,
+						BoxHeight = 1,
+						BoxLength = 12,
+						BoxWidth = 9,
+						Items = new Item[]
+						{
+							new Item{
+								Sku = "TST",
+								LotNumber = "LT1",
+								SerialNumber = "",
+								Description = "TEST",
+								Description2 = "",
+								Quantity = 1,
+								UnitPrice = 1,
+								ExpirationDate = "2099-07-19T17:12:02.731Z",
+								Uom = "Each",
+								Supplier = "",
+								CountryOfOrigin = "US"
+							}
+						}
+					}
+				},
+				ClientCode = "Test",
+				Terms = "SHIPPER"
+			};
+
+			Assert.ThrowsExceptionAsync<ApplicationException>(
+				async () => await new Shipments(_apiKey, _secretKey).RateShop(
+					duplicateHandling: "2",
+					shipment: shipment
+				)
+			);
+		}
+
+		[TestMethod]
+		public void RateShopShipment_RequestIsNull()
+		{
+			Assert.ThrowsExceptionAsync<ApplicationException>(
+				async () => await new Shipments(_apiKey, _secretKey).RateShop(
+					duplicateHandling: "2",
+					shipment: null
+				)
+			);
 		}
 
 		[TestMethod]
@@ -119,6 +234,125 @@ namespace Techdinamics.TechShip.Tests
 		}
 
 		[TestMethod]
+		public void CarrierShipment_BadRequest()
+		{
+			var shipment = new ShipmentRequest
+			{
+				Sequence = 1,
+				ShipToAddress1 = "123 SAMPLE STREET",
+				ShipToCountry = "US",
+				ShipToName = "JOHN SMITH",
+				CarrierCode = "UPSN",
+				ServiceCode = "STD",
+				TransactionNumber = "987654321012345678909876543210123456789098765432101234567890987654321012345678909876543210123456789098765432101234567890987654321012345678909876543210123456789098765432101234567890987654321012345678909876543210123456789098765432101234567890987654321012345",
+				ShipToPostal = "46774",
+				ShipToCity = "NEW HAVEN",
+				ShipToStateProvince = "IN",
+				ShipToPhone = "11111111111",
+				Packages = new Package[]
+				{
+					new Package {
+						Weight = 2,
+						BoxHeight = 1,
+						BoxLength = 12,
+						BoxWidth = 9,
+						Items = new Item[]
+						{
+							new Item{
+								Sku = "TST",
+								LotNumber = "LT1",
+								SerialNumber = "",
+								Description = "TEST",
+								Description2 = "",
+								Quantity = 1,
+								UnitPrice = 1,
+								ExpirationDate = "2099-07-19T17:12:02.731Z",
+								Uom = "Each",
+								Supplier = "",
+								CountryOfOrigin = "US"
+							}
+						}
+					}
+				},
+				ClientCode = "Test",
+				Terms = "SHIPPER"
+			};
+
+			Assert.ThrowsExceptionAsync<ApplicationException>(
+				async () => await new Shipments(_apiKey, _secretKey).Carrier(
+					duplicateHandling: "2",
+					cancelLabelAfter: "101",
+					shipment: shipment
+				)
+			);
+		}
+
+		[TestMethod]
+		public void CarrierShipment_WithoutRequiredProp()
+		{
+			var shipment = new ShipmentRequest
+			{
+				Sequence = 1,
+				ShipToAddress1 = "123 SAMPLE STREET",
+				ShipToCountry = "US",
+				ShipToName = "JOHN SMITH",
+				CarrierCode = "UPSN",
+				ServiceCode = "STD",
+				ShipToPostal = "46774",
+				ShipToCity = "NEW HAVEN",
+				ShipToStateProvince = "IN",
+				ShipToPhone = "11111111111",
+				Packages = new Package[]
+				{
+					new Package {
+						Weight = 2,
+						BoxHeight = 1,
+						BoxLength = 12,
+						BoxWidth = 9,
+						Items = new Item[]
+						{
+							new Item{
+								Sku = "TST",
+								LotNumber = "LT1",
+								SerialNumber = "",
+								Description = "TEST",
+								Description2 = "",
+								Quantity = 1,
+								UnitPrice = 1,
+								ExpirationDate = "2099-07-19T17:12:02.731Z",
+								Uom = "Each",
+								Supplier = "",
+								CountryOfOrigin = "US"
+							}
+						}
+					}
+				},
+				ClientCode = "Test",
+				Terms = "SHIPPER"
+			};
+
+			Assert.ThrowsExceptionAsync<ApplicationException>(
+				async () => await new Shipments(_apiKey, _secretKey).Carrier(
+					duplicateHandling: "2",
+					cancelLabelAfter: "101",
+					shipment: shipment
+				)
+			);
+		}
+
+		[TestMethod]
+		public void CarrierShipment_RequestIsNull()
+		{
+			Assert.ThrowsExceptionAsync<ApplicationException>(
+				async () => await new Shipments(_apiKey, _secretKey).Carrier(
+					duplicateHandling: "2",
+					cancelLabelAfter: "101",
+					shipment: null
+				)
+			);
+		}
+
+		[TestMethod]
 		public async Task VoidShipment_Success()
 		{
 			var result = await new Shipments(_apiKey, _secretKey).Void(shipmentId: "35776482");
@@ -127,11 +361,27 @@ namespace Techdinamics.TechShip.Tests
 		}
 
 		[TestMethod]
+		public void VoidShipment_Error()
+		{
+			Assert.ThrowsExceptionAsync<ApplicationException>(
+				async () => await new Shipments(_apiKey, _secretKey).Get(shipmentId: "-1")
+			);
+		}
+
+		[TestMethod]
 		public async Task GetShipment_Success()
 		{
 			var result = await new Shipments(_apiKey, _secretKey).Get(shipmentId: "35776482");
 
 			Assert.IsNotNull(result.ClientCode);
+		}
+
+		[TestMethod]
+		public void GetShipment_Error()
+		{
+			Assert.ThrowsExceptionAsync<ApplicationException>(
+				async () => await new Shipments(_apiKey, _secretKey).Get(shipmentId: "0")
+			);
 		}
 
 		[TestMethod]
@@ -147,7 +397,7 @@ namespace Techdinamics.TechShip.Tests
 					ShipToCountry = "US",
 					ShipToName = "JOHN SMITH",
 					ServiceCode = "GRD",
-					TransactionNumber = $"TEST{transactionNumber}",
+					TransactionNumber = $"TEST {Guid.NewGuid()} {transactionNumber}",
 					ShipToPostal = "46774",
 					ShipToCity = "NEW HAVEN",
 					ShipToStateProvince = "IN",
@@ -205,7 +455,7 @@ namespace Techdinamics.TechShip.Tests
 					ShipToCountry = "US",
 					ShipToName = "JOHN SMITH",
 					ServiceCode = "GRD",
-					TransactionNumber = $"TEST{transactionNumber}",
+					TransactionNumber = $"TEST {Guid.NewGuid()} {transactionNumber}",
 					ShipToPostal = "46774",
 					ShipToCity = "NEW HAVEN",
 					ShipToStateProvince = "IN",

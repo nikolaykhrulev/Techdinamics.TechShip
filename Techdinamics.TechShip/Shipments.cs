@@ -13,7 +13,7 @@ namespace Techdinamics.TechShip
 		readonly string _apiKey;
 		readonly string _secretKey;
 		const int _maxDegreeOfParallelism = 10;
-		const string _baseUrl = "https://test-api-us.techship.io/api/v2/shipments/";
+		readonly string _baseUrl = "https://test-api-us.techship.io/api/v2/shipments/";
 
 		private readonly static JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
 		{
