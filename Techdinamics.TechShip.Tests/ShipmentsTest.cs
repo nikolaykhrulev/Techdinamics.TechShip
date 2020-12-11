@@ -9,8 +9,8 @@ namespace Techdinamics.TechShip.Tests
 	[TestClass]
 	public class ShipmentsTest
 	{
-		const string apiKey = "YOUR_API_KEY";
-		const string secretKey = "YOUR_SECRET_KEY";
+		const string _apiKey = "YOUR_API_KEY";
+		const string _secretKey = "YOUR_SECRET_KEY";
 
 		[TestMethod]
 		public async Task RateShopShipment_Success()
@@ -56,9 +56,7 @@ namespace Techdinamics.TechShip.Tests
 				Terms = "SHIPPER"
 			};
 
-			var result = await new Shipments().RateShop(
-				apiKey: apiKey,
-				secretKey: secretKey,
+			var result = await new Shipments(_apiKey, _secretKey).RateShop(
 				duplicateHandling: "2",
 				shipment: shipment
 			);
@@ -111,9 +109,7 @@ namespace Techdinamics.TechShip.Tests
 				Terms = "SHIPPER"
 			};
 
-			var result = await new Shipments().Carrier(
-				apiKey: apiKey,
-				secretKey: secretKey,
+			var result = await new Shipments(_apiKey, _secretKey).Carrier(
 				duplicateHandling: "2",
 				cancelLabelAfter: "101",
 				shipment: shipment
@@ -125,11 +121,7 @@ namespace Techdinamics.TechShip.Tests
 		[TestMethod]
 		public async Task VoidShipment_Success()
 		{
-			var result = await new Shipments().Void(
-				apiKey: apiKey,
-				secretKey: secretKey,
-				shipmentId: "35776482"
-			);
+			var result = await new Shipments(_apiKey, _secretKey).Void(shipmentId: "35776482");
 
 			Assert.Equals(result.Success, true);
 		}
@@ -137,11 +129,7 @@ namespace Techdinamics.TechShip.Tests
 		[TestMethod]
 		public async Task GetShipment_Success()
 		{
-			var result = await new Shipments().Get(
-				apiKey: apiKey,
-				secretKey: secretKey,
-				shipmentId: "35776482"
-			);
+			var result = await new Shipments(_apiKey, _secretKey).Get(shipmentId: "35776482");
 
 			Assert.IsNotNull(result.ClientCode);
 		}
@@ -164,16 +152,16 @@ namespace Techdinamics.TechShip.Tests
 					ShipToCity = "NEW HAVEN",
 					ShipToStateProvince = "IN",
 					ShipToPhone = "11111111111",
-					Packages = new Dto.Request.Package[]
+					Packages = new Package[]
 					{
-					new Dto.Request.Package {
+					new Package {
 						Weight = 2,
 						BoxHeight = 1,
 						BoxLength = 12,
 						BoxWidth = 9,
-						Items = new Dto.Request.Item[]
+						Items = new Item[]
 						{
-							new Dto.Request.Item{
+							new Item{
 								Sku = "TST",
 								LotNumber = "LT1",
 								SerialNumber = "",
@@ -196,9 +184,7 @@ namespace Techdinamics.TechShip.Tests
 				shipments.Add(shipment);
 			}
 
-			var result = new Shipments().RateShopBatch(
-				apiKey: apiKey,
-				secretKey: secretKey,
+			var result = new Shipments(_apiKey, _secretKey).RateShopBatch(
 				duplicateHandling: "2",
 				shipments: shipments.ToArray()
 			);
@@ -224,9 +210,9 @@ namespace Techdinamics.TechShip.Tests
 					ShipToCity = "NEW HAVEN",
 					ShipToStateProvince = "IN",
 					ShipToPhone = "11111111111",
-					Packages = new Dto.Request.Package[]
+					Packages = new Package[]
 					{
-					new Dto.Request.Package {
+					new Package {
 						Weight = 2,
 						BoxHeight = 1,
 						BoxLength = 12,
@@ -256,9 +242,7 @@ namespace Techdinamics.TechShip.Tests
 				shipments.Add(shipment);
 			}
 
-			var result = new Shipments().CarrierBatch(
-				apiKey: apiKey,
-				secretKey: secretKey,
+			var result = new Shipments(_apiKey, _secretKey).CarrierBatch(
 				cancelLabelAfter: "8",
 				duplicateHandling: "2",
 				shipments: shipments.ToArray()

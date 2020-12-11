@@ -9,22 +9,26 @@ namespace Techdinamics.TechShip
 {
 	public class Shipments
 	{
-		const string baseUrl = "https://test-api-us.techship.io/api/v2/shipments/";
-		const int maxDegreeOfParallelism = 10;
+		const string _baseUrl = "https://test-api-us.techship.io/api/v2/shipments/";
+		const int _maxDegreeOfParallelism = 10;
+		readonly string _apiKey;
+		readonly string _secretKey;
 
 		private readonly static JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
 		{
 			NullValueHandling = NullValueHandling.Ignore
 		};
 
-		public async Task<RateShopShipment> RateShop(
-			string apiKey,
-			string secretKey,
-			string duplicateHandling,
-			Shipment shipment)
+		public Shipments(string apiKey, string secretKey)
+		{
+			_apiKey = apiKey;
+			_secretKey = secretKey;
+		}
+
+		public async Task<RateShopShipment> RateShop(string duplicateHandling, Shipment shipment)
 		{
 			string route = $"create?duplicateHandling={duplicateHandling}";
-			var connection = GetConnection(apiKey, secretKey, route, Method.POST, shipment);
+			var connection = GetConnection(route, Method.POST, shipment);
 
 			var body = JsonConvert.SerializeObject(shipment);
 			var restResponse = await connection.Client.ExecuteAsync(connection.Request);
@@ -39,15 +43,10 @@ namespace Techdinamics.TechShip
 			return result;
 		}
 
-		public async Task<CarrierShipment> Carrier(
-			string apiKey,
-			string secretKey,
-			string cancelLabelAfter,
-			string duplicateHandling,
-			Shipment shipment)
+		public async Task<CarrierShipment> Carrier(string cancelLabelAfter, string duplicateHandling, Shipment shipment)
 		{
 			string route = $"create?duplicateHandling={duplicateHandling}";
-			var connection = GetConnection(apiKey, secretKey, route, Method.POST, shipment);
+			var connection = GetConnection(route, Method.POST, shipment);
 			connection.Request.AddHeader("x-cancel-label-after", cancelLabelAfter);
 
 			var body = JsonConvert.SerializeObject(shipment);
@@ -63,13 +62,10 @@ namespace Techdinamics.TechShip
 			return result;
 		}
 
-		public async Task<VoidShipment> Void(
-			string apiKey,
-			string secretKey,
-			string shipmentId)
+		public async Task<VoidShipment> Void(string shipmentId)
 		{
 			string route = $"{shipmentId}/delete";
-			var connection = GetConnection<string>(apiKey, secretKey, route, Method.PUT);
+			var connection = GetConnection<string>(route, Method.PUT);
 			connection.Request.AlwaysMultipartFormData = true;
 
 			var restResponse = await connection.Client.ExecuteAsync(connection.Request);
@@ -84,12 +80,9 @@ namespace Techdinamics.TechShip
 			return result;
 		}
 
-		public async Task<GetShipment> Get(
-			string apiKey,
-			string secretKey,
-			string shipmentId)
+		public async Task<GetShipment> Get(string shipmentId)
 		{
-			var connection = GetConnection<string>(apiKey, secretKey, shipmentId, Method.GET);
+			var connection = GetConnection<string>(shipmentId, Method.GET);
 
 			var restResponse = await connection.Client.ExecuteAsync(connection.Request);
 
@@ -103,17 +96,13 @@ namespace Techdinamics.TechShip
 			return result;
 		}
 
-		public object RateShopBatch(
-			string apiKey,
-			string secretKey,
-			string duplicateHandling,
-			Shipment[] shipments)
+		public object RateShopBatch(string duplicateHandling, Shipment[] shipments)
 		{
-			Parallel.ForEach(shipments, new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (shipment) =>
+			Parallel.ForEach(shipments, new ParallelOptions { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, async (shipment) =>
 			{
 				try
 				{
-					await RateShop(apiKey, secretKey, duplicateHandling, shipment);
+					await RateShop(duplicateHandling, shipment);
 				}
 				catch (Exception ex)
 				{
@@ -127,18 +116,13 @@ namespace Techdinamics.TechShip
 			};
 		}
 
-		public object CarrierBatch(
-			string apiKey,
-			string secretKey,
-			string cancelLabelAfter,
-			string duplicateHandling,
-			Shipment[] shipments)
+		public object CarrierBatch(string cancelLabelAfter, string duplicateHandling, Shipment[] shipments)
 		{
-			Parallel.ForEach(shipments, new ParallelOptions { MaxDegreeOfParallelism = maxDegreeOfParallelism }, async (shipment) =>
+			Parallel.ForEach(shipments, new ParallelOptions { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, async (shipment) =>
 			{
 				try
 				{
-					await Carrier(apiKey, secretKey, cancelLabelAfter, duplicateHandling, shipment);
+					await Carrier(cancelLabelAfter, duplicateHandling, shipment);
 				}
 				catch (Exception ex)
 				{
@@ -152,17 +136,12 @@ namespace Techdinamics.TechShip
 			};
 		}
 
-		private TechShipConnection GetConnection<T>(
-			string apiKey,
-			string secretKey,
-			string route,
-			Method method,
-			T data = default)
+		private TechShipConnection GetConnection<T>(string route, Method method, T data = default)
 		{
-			var client = new RestClient(baseUrl);
+			var client = new RestClient(_baseUrl);
 			var request = new RestRequest(route, method);
-			request.AddHeader("x-api-key", apiKey);
-			request.AddHeader("x-secret-key", secretKey);
+			request.AddHeader("x-api-key", _apiKey);
+			request.AddHeader("x-secret-key", _secretKey);
 			request.AddHeader("Content-Type", "application/json");
 
 			if (method == Method.POST)
