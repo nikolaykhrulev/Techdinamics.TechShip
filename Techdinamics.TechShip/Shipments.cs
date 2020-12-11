@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using RestSharp;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Techdinamics.TechShip.Dto.Request;
 using Techdinamics.TechShip.Dto.Response;
@@ -9,10 +10,10 @@ namespace Techdinamics.TechShip
 {
 	public class Shipments
 	{
-		const string _baseUrl = "https://test-api-us.techship.io/api/v2/shipments/";
-		const int _maxDegreeOfParallelism = 10;
 		readonly string _apiKey;
 		readonly string _secretKey;
+		const int _maxDegreeOfParallelism = 10;
+		const string _baseUrl = "https://test-api-us.techship.io/api/v2/shipments/";
 
 		private readonly static JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
 		{
@@ -25,7 +26,7 @@ namespace Techdinamics.TechShip
 			_secretKey = secretKey;
 		}
 
-		public async Task<RateShopShipment> RateShop(string duplicateHandling, Shipment shipment)
+		public async Task<ShipmentResponse> RateShop(string duplicateHandling, ShipmentRequest shipment)
 		{
 			string route = $"create?duplicateHandling={duplicateHandling}";
 			var connection = GetConnection(route, Method.POST, shipment);
@@ -38,12 +39,12 @@ namespace Techdinamics.TechShip
 				throw new ApplicationException($"Server response: {restResponse.Content} ; failed to rate shop shipments: {body}");
 			}
 
-			var result = JsonConvert.DeserializeObject<RateShopShipment>(restResponse.Content);
+			var result = JsonConvert.DeserializeObject<ShipmentResponse>(restResponse.Content);
 
 			return result;
 		}
 
-		public async Task<CarrierShipment> Carrier(string cancelLabelAfter, string duplicateHandling, Shipment shipment)
+		public async Task<ShipmentResponse> Carrier(string cancelLabelAfter, string duplicateHandling, ShipmentRequest shipment)
 		{
 			string route = $"create?duplicateHandling={duplicateHandling}";
 			var connection = GetConnection(route, Method.POST, shipment);
@@ -57,7 +58,7 @@ namespace Techdinamics.TechShip
 				throw new ApplicationException($"Server response: {restResponse.Content} ; failed to carrier shipments: {body}");
 			}
 
-			var result = JsonConvert.DeserializeObject<CarrierShipment>(restResponse.Content);
+			var result = JsonConvert.DeserializeObject<ShipmentResponse>(restResponse.Content);
 
 			return result;
 		}
@@ -96,44 +97,40 @@ namespace Techdinamics.TechShip
 			return result;
 		}
 
-		public object RateShopBatch(string duplicateHandling, Shipment[] shipments)
+		public List<ShipmentResponse> RateShopBatch(string duplicateHandling, ShipmentRequest[] shipments)
 		{
-			Parallel.ForEach(shipments, new ParallelOptions { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, async (shipment) =>
+			try
 			{
-				try
+				var result = new List<ShipmentResponse>();
+				Parallel.ForEach(shipments, new ParallelOptions { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, async (shipment) =>
 				{
-					await RateShop(duplicateHandling, shipment);
-				}
-				catch (Exception ex)
-				{
-					throw new ApplicationException(ex.Message);
-				}
-			});
+					result.Add(await RateShop(duplicateHandling, shipment));
+				});
 
-			return new
+				return result;
+			}
+			catch (Exception ex)
 			{
-				Success = true
-			};
+				throw new ApplicationException(ex.ToString());
+			}
 		}
 
-		public object CarrierBatch(string cancelLabelAfter, string duplicateHandling, Shipment[] shipments)
+		public List<ShipmentResponse> CarrierBatch(string cancelLabelAfter, string duplicateHandling, ShipmentRequest[] shipments)
 		{
-			Parallel.ForEach(shipments, new ParallelOptions { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, async (shipment) =>
+			try
 			{
-				try
+				var result = new List<ShipmentResponse>();
+				Parallel.ForEach(shipments, new ParallelOptions { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, async (shipment) =>
 				{
-					await Carrier(cancelLabelAfter, duplicateHandling, shipment);
-				}
-				catch (Exception ex)
-				{
-					throw new ApplicationException(ex.Message);
-				}
-			});
+					result.Add(await Carrier(cancelLabelAfter, duplicateHandling, shipment));
+				});
 
-			return new
+				return result;
+			}
+			catch (Exception ex)
 			{
-				Success = true
-			};
+				throw new ApplicationException(ex.ToString());
+			}
 		}
 
 		private TechShipConnection GetConnection<T>(string route, Method method, T data = default)

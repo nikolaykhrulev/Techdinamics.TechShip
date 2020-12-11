@@ -48,10 +48,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dto\Request\Shipment.cs" />
-    <Compile Include="Dto\Response\CarrierShipment.cs" />
+    <Compile Include="Dto\Enum\Shipment.cs" />
+    <Compile Include="Dto\Request\ShipmentRequest.cs" />
     <Compile Include="Dto\Response\GetShipment.cs" />
-    <Compile Include="Dto\Response\RateShopShipment.cs" />
+    <Compile Include="Dto\Response\ShipmentResponse.cs" />
     <Compile Include="Dto\Response\VoidShipment.cs" />
     <Compile Include="Shipments.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

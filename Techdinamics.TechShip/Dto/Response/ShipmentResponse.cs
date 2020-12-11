@@ -1,14 +1,15 @@
 ﻿using Newtonsoft.Json;
+using Techdinamics.TechShip.Dto.Enum;
 
 namespace Techdinamics.TechShip.Dto.Response
 {
-	public partial class RateShopShipment
+	public partial class ShipmentResponse
 	{
 		[JsonProperty("BatchId")]
-		public long BatchId { get; set; }
+		public int BatchId { get; set; }
 
 		[JsonProperty("ShipmentId")]
-		public long ShipmentId { get; set; }
+		public int ShipmentId { get; set; }
 
 		[JsonProperty("ManifestId")]
 		public string ManifestId { get; set; }
@@ -29,73 +30,82 @@ namespace Techdinamics.TechShip.Dto.Response
 		public string TransactionNumber { get; set; }
 
 		[JsonProperty("CustomerOrder")]
-		public object CustomerOrder { get; set; }
+		public string CustomerOrder { get; set; }
 
 		[JsonProperty("CustomerPO")]
-		public object CustomerPo { get; set; }
+		public string CustomerPo { get; set; }
 
 		[JsonProperty("CustomerNumber")]
-		public object CustomerNumber { get; set; }
+		public string CustomerNumber { get; set; }
 
 		[JsonProperty("Sequence")]
-		public long Sequence { get; set; }
+		public int? Sequence { get; set; }
 
 		[JsonProperty("ProcessingErrors")]
-		public object ProcessingErrors { get; set; }
+		public string ProcessingErrors { get; set; }
 
 		[JsonProperty("HasErrors")]
-		public bool HasErrors { get; set; }
+		public bool? HasErrors { get; set; }
 
 		[JsonProperty("Labels")]
-		public RateShopLabel[] Labels { get; set; }
+		public Label[] Labels { get; set; }
 
 		[JsonProperty("Tax1Type")]
 		public string Tax1Type { get; set; }
 
 		[JsonProperty("Tax1Amount")]
-		public object Tax1Amount { get; set; }
+		public double? Tax1Amount { get; set; }
 
 		[JsonProperty("Tax2Type")]
 		public string Tax2Type { get; set; }
 
 		[JsonProperty("Tax2Amount")]
-		public object Tax2Amount { get; set; }
+		public double? Tax2Amount { get; set; }
 
 		[JsonProperty("Tax3Type")]
 		public string Tax3Type { get; set; }
 
 		[JsonProperty("Tax3Amount")]
-		public object Tax3Amount { get; set; }
+		public double? Tax3Amount { get; set; }
 
 		[JsonProperty("ShippingCharge")]
-		public double ShippingCharge { get; set; }
+		public double? ShippingCharge { get; set; }
 
 		[JsonProperty("ShippingChargeTotal")]
-		public double ShippingChargeTotal { get; set; }
+		public double? ShippingChargeTotal { get; set; }
 
 		[JsonProperty("FuelSurcharge")]
-		public object FuelSurcharge { get; set; }
+		public double? FuelSurcharge { get; set; }
 
 		[JsonProperty("FeeMarkup")]
-		public long FeeMarkup { get; set; }
+		public double? FeeMarkup { get; set; }
 
 		[JsonProperty("Rates")]
 		public Rate[] Rates { get; set; }
 	}
 
-	public partial class RateShopLabel
+	public partial class Label
 	{
+		[JsonProperty("Type")]
+		public Type Type { get; set; }
+
+		[JsonProperty("Purpose")]
+		public string Purpose { get; set; }
+
+		[JsonProperty("Label")]
+		public string LabelLabel { get; set; }
+
+		[JsonProperty("PackageId")]
+		public int? PackageId { get; set; }
+
 		[JsonProperty("TrackingNumber")]
 		public string TrackingNumber { get; set; }
 
-		[JsonProperty("PackageId")]
-		public long PackageId { get; set; }
+		[JsonProperty("SSCC")]
+		public string Sscc { get; set; }
 
 		[JsonProperty("RequestPackageId")]
-		public object RequestPackageId { get; set; }
-
-		[JsonProperty("SSCC")]
-		public object Sscc { get; set; }
+		public string RequestPackageId { get; set; }
 
 		[JsonProperty("PackageShippingCharge")]
 		public double? PackageShippingCharge { get; set; }
@@ -104,34 +114,25 @@ namespace Techdinamics.TechShip.Dto.Response
 		public double? PackageShippingChargeTotal { get; set; }
 
 		[JsonProperty("PackageTax1Type")]
-		public object PackageTax1Type { get; set; }
+		public string PackageTax1Type { get; set; }
 
 		[JsonProperty("PackageTax1Amount")]
-		public object PackageTax1Amount { get; set; }
+		public string PackageTax1Amount { get; set; }
 
 		[JsonProperty("PackageTax2Type")]
-		public object PackageTax2Type { get; set; }
+		public string PackageTax2Type { get; set; }
 
 		[JsonProperty("PackageTax2Amount")]
-		public object PackageTax2Amount { get; set; }
+		public string PackageTax2Amount { get; set; }
 
 		[JsonProperty("PackageTax3Type")]
-		public object PackageTax3Type { get; set; }
+		public string PackageTax3Type { get; set; }
 
 		[JsonProperty("PackageTax3Amount")]
-		public object PackageTax3Amount { get; set; }
+		public string PackageTax3Amount { get; set; }
 
 		[JsonProperty("PackageFuelSurcharge")]
-		public object PackageFuelSurcharge { get; set; }
-
-		[JsonProperty("Type")]
-		public long Type { get; set; }
-
-		[JsonProperty("Label")]
-		public string LabelLabel { get; set; }
-
-		[JsonProperty("Purpose")]
-		public string Purpose { get; set; }
+		public string PackageFuelSurcharge { get; set; }
 	}
 
 	public partial class Rate

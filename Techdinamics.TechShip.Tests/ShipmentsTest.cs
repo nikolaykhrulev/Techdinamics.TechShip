@@ -15,7 +15,7 @@ namespace Techdinamics.TechShip.Tests
 		[TestMethod]
 		public async Task RateShopShipment_Success()
 		{
-			var shipment = new Shipment
+			var shipment = new ShipmentRequest
 			{
 				Sequence = 1,
 				ShipToAddress1 = "123 SAMPLE STREET",
@@ -67,7 +67,7 @@ namespace Techdinamics.TechShip.Tests
 		[TestMethod]
 		public async Task CarrierShipment_Success()
 		{
-			var shipment = new Shipment
+			var shipment = new ShipmentRequest
 			{
 				Sequence = 1,
 				ShipToAddress1 = "123 SAMPLE STREET",
@@ -137,10 +137,10 @@ namespace Techdinamics.TechShip.Tests
 		[TestMethod]
 		public void RateShopBatch_Success()
 		{
-			var shipments = new List<Shipment>();
+			var shipments = new List<ShipmentRequest>();
 			foreach (var transactionNumber in Enumerable.Range(1, 100))
 			{
-				var shipment = new Shipment
+				var shipment = new ShipmentRequest
 				{
 					Sequence = 1,
 					ShipToAddress1 = "123 SAMPLE STREET",
@@ -195,10 +195,10 @@ namespace Techdinamics.TechShip.Tests
 		[TestMethod]
 		public void CarrierBatch_Success()
 		{
-			var shipments = new List<Shipment>();
+			var shipments = new List<ShipmentRequest>();
 			foreach (var transactionNumber in Enumerable.Range(1, 100))
 			{
-				var shipment = new Shipment
+				var shipment = new ShipmentRequest
 				{
 					Sequence = 1,
 					ShipToAddress1 = "123 SAMPLE STREET",

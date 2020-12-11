@@ -1,10 +1,9 @@
 ﻿using Newtonsoft.Json;
 using Techdinamics.TechShip.Dto.Enum;
-using Techdinamics.TechShip.Dto.Request;
 
-namespace Techdinamics.TechShip.Dto.Response
+namespace Techdinamics.TechShip.Dto.Request
 {
-	public partial class GetShipment
+	public partial class ShipmentRequest
 	{
 		[JsonProperty("BatchNumber")]
 		public string BatchNumber { get; set; }
@@ -182,105 +181,15 @@ namespace Techdinamics.TechShip.Dto.Response
 
 		[JsonProperty("Id")]
 		public int? Id { get; set; }
+	}
 
-		[JsonProperty("ShipFromName")]
-		public string ShipFromName { get; set; }
+	public partial class CustomField
+	{
+		[JsonProperty("Code")]
+		public string Code { get; set; }
 
-		[JsonProperty("ShipFromCompany")]
-		public string ShipFromCompany { get; set; }
-
-		[JsonProperty("ShipFromAddress1")]
-		public string ShipFromAddress1 { get; set; }
-
-		[JsonProperty("ShipFromAddress2")]
-		public string ShipFromAddress2 { get; set; }
-
-		[JsonProperty("ShipFromAddress3")]
-		public string ShipFromAddress3 { get; set; }
-
-		[JsonProperty("ShipFromCity")]
-		public string ShipFromCity { get; set; }
-
-		[JsonProperty("ShipFromStateProvince")]
-		public string ShipFromStateProvince { get; set; }
-
-		[JsonProperty("ShipFromPostal")]
-		public string ShipFromPostal { get; set; }
-
-		[JsonProperty("ShipFromCountry")]
-		public string ShipFromCountry { get; set; }
-
-		[JsonProperty("ShipFromPhone")]
-		public string ShipFromPhone { get; set; }
-
-		[JsonProperty("ShipFromEmail")]
-		public string ShipFromEmail { get; set; }
-
-		[JsonProperty("HasShipFromAddress")]
-		public string HasShipFromAddress { get; set; }
-
-		[JsonProperty("LabelName")]
-		public string LabelName { get; set; }
-
-		[JsonProperty("LabelCompany")]
-		public string LabelCompany { get; set; }
-
-		[JsonProperty("LabelAddress1")]
-		public string LabelAddress1 { get; set; }
-
-		[JsonProperty("LabelAddress2")]
-		public string LabelAddress2 { get; set; }
-
-		[JsonProperty("LabelAddress3")]
-		public string LabelAddress3 { get; set; }
-
-		[JsonProperty("LabelCity")]
-		public string LabelCity { get; set; }
-
-		[JsonProperty("LabelStateProvince")]
-		public string LabelStateProvince { get; set; }
-
-		[JsonProperty("LabelPostal")]
-		public string LabelPostal { get; set; }
-
-		[JsonProperty("LabelCountry")]
-		public string LabelCountry { get; set; }
-
-		[JsonProperty("LabelPhone")]
-		public string LabelPhone { get; set; }
-
-		[JsonProperty("LabelEmail")]
-		public string LabelEmail { get; set; }
-
-		[JsonProperty("HasLabelAddress")]
-		public string HasLabelAddress { get; set; }
-
-		[JsonProperty("FreightClass")]
-		public string FreightClass { get; set; }
-
-		[JsonProperty("FreightNMFCClass")]
-		public string FreightNmfcClass { get; set; }
-
-		[JsonProperty("SignatureAdult")]
-		public bool SignatureAdult { get; set; }
-
-		[JsonProperty("SaturdayPickup")]
-		public bool SaturdayPickup { get; set; }
-
-		[JsonProperty("SaturdayDelivery")]
-		public bool SaturdayDelivery { get; set; }
-
-		[JsonProperty("HoldAtLocation")]
-		public bool HoldAtLocation { get; set; }
-
-		[JsonProperty("AppointmentDelivery")]
-		public bool AppointmentDelivery { get; set; }
-
-		[JsonProperty("DryIce")]
-		public bool DryIce { get; set; }
-
-		[JsonProperty("SpecialHandling")]
-		public bool SpecialHandling { get; set; }
+		[JsonProperty("Value")]
+		public string Value { get; set; }
 	}
 
 	public partial class Package
@@ -348,14 +257,8 @@ namespace Techdinamics.TechShip.Dto.Response
 		[JsonProperty("PackingSlips")]
 		public Label[] PackingSlips { get; set; }
 
-		[JsonProperty("FreightClass")]
-		public string FreightClass { get; set; }
-
 		[JsonProperty("Id")]
 		public int? Id { get; set; }
-
-		[JsonProperty("DeclaredValue")]
-		public string DeclaredValue { get; set; }
 	}
 
 	public partial class Item
@@ -398,5 +301,17 @@ namespace Techdinamics.TechShip.Dto.Response
 
 		[JsonProperty("Id")]
 		public int? Id { get; set; }
+	}
+
+	public partial class Label
+	{
+		[JsonProperty("Type")]
+		public Type Type { get; set; }
+
+		[JsonProperty("Purpose")]
+		public string Purpose { get; set; }
+
+		[JsonProperty("Label")]
+		public string LabelLabel { get; set; }
 	}
 }
