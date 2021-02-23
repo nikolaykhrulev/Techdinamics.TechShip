@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Techdinamics.TechShip.Dto.Enum;
 using Techdinamics.TechShip.Dto.Request;
 
 namespace Techdinamics.TechShip.Tests
@@ -58,7 +59,7 @@ namespace Techdinamics.TechShip.Tests
 			};
 
 			var result = await new Shipments(_apiKey, _secretKey).RateShop(
-				duplicateHandling: "2",
+				duplicateHandling: DuplicateHandling.Overwrite,
 				shipment: shipment
 			);
 
@@ -111,7 +112,7 @@ namespace Techdinamics.TechShip.Tests
 
 			Assert.ThrowsExceptionAsync<ApplicationException>(
 				async () => await new Shipments(_apiKey, _secretKey).RateShop(
-					duplicateHandling: "2",
+					duplicateHandling: DuplicateHandling.Overwrite,
 					shipment: shipment
 				)
 			);
@@ -162,7 +163,7 @@ namespace Techdinamics.TechShip.Tests
 
 			Assert.ThrowsExceptionAsync<ApplicationException>(
 				async () => await new Shipments(_apiKey, _secretKey).RateShop(
-					duplicateHandling: "2",
+					duplicateHandling: DuplicateHandling.Overwrite,
 					shipment: shipment
 				)
 			);
@@ -173,7 +174,7 @@ namespace Techdinamics.TechShip.Tests
 		{
 			Assert.ThrowsExceptionAsync<ApplicationException>(
 				async () => await new Shipments(_apiKey, _secretKey).RateShop(
-					duplicateHandling: "2",
+					duplicateHandling: DuplicateHandling.Overwrite,
 					shipment: null
 				)
 			);
@@ -225,7 +226,7 @@ namespace Techdinamics.TechShip.Tests
 			};
 
 			var result = await new Shipments(_apiKey, _secretKey).Carrier(
-				duplicateHandling: "2",
+				duplicateHandling: DuplicateHandling.Overwrite,
 				shipment: shipment
 			);
 
@@ -279,7 +280,7 @@ namespace Techdinamics.TechShip.Tests
 
 			Assert.ThrowsExceptionAsync<ApplicationException>(
 				async () => await new Shipments(_apiKey, _secretKey).Carrier(
-					duplicateHandling: "2",
+					duplicateHandling: DuplicateHandling.Overwrite,
 					shipment: shipment
 				)
 			);
@@ -331,7 +332,7 @@ namespace Techdinamics.TechShip.Tests
 
 			Assert.ThrowsExceptionAsync<ApplicationException>(
 				async () => await new Shipments(_apiKey, _secretKey).Carrier(
-					duplicateHandling: "2",
+					duplicateHandling: DuplicateHandling.Overwrite,
 					shipment: shipment
 				)
 			);
@@ -342,7 +343,7 @@ namespace Techdinamics.TechShip.Tests
 		{
 			Assert.ThrowsExceptionAsync<ApplicationException>(
 				async () => await new Shipments(_apiKey, _secretKey).Carrier(
-					duplicateHandling: "2",
+					duplicateHandling: DuplicateHandling.Overwrite,
 					shipment: null
 				)
 			);
@@ -351,7 +352,7 @@ namespace Techdinamics.TechShip.Tests
 		[TestMethod]
 		public async Task VoidShipment_Success()
 		{
-			var result = await new Shipments(_apiKey, _secretKey).Void(shipmentId: "35776482");
+			var result = await new Shipments(_apiKey, _secretKey).Void(shipmentId: 35776482);
 
 			Assert.Equals(result.Success, true);
 		}
@@ -431,7 +432,7 @@ namespace Techdinamics.TechShip.Tests
 			}
 
 			var result = new Shipments(_apiKey, _secretKey).RateShopBatch(
-				duplicateHandling: "2",
+				duplicateHandling: DuplicateHandling.Overwrite,
 				shipments: shipments.ToArray()
 			);
 
@@ -489,7 +490,7 @@ namespace Techdinamics.TechShip.Tests
 			}
 
 			var result = new Shipments(_apiKey, _secretKey).CarrierBatch(
-				duplicateHandling: "2",
+				duplicateHandling: DuplicateHandling.Overwrite,
 				shipments: shipments.ToArray()
 			);
 

@@ -3,6 +3,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Techdinamics.TechShip.Dto.Enum;
 using Techdinamics.TechShip.Dto.Request;
 using Techdinamics.TechShip.Dto.Response;
 
@@ -26,10 +27,11 @@ namespace Techdinamics.TechShip
 			_secretKey = secretKey;
 		}
 
-		public async Task<ShipmentResponse> RateShop(string duplicateHandling, ShipmentRequest shipment)
+		public async Task<ShipmentResponse> RateShop(DuplicateHandling duplicateHandling, ShipmentRequest shipment)
 		{
-			string route = $"create?duplicateHandling={duplicateHandling}";
-			var connection = GetConnection(route, Method.POST, shipment);
+			var connection = GetConnection("create", Method.POST, shipment);
+			int duplicateHanlde = (int)duplicateHandling;
+			connection.Request.AddQueryParameter("duplicateHandling", duplicateHanlde.ToString());
 
 			var body = JsonConvert.SerializeObject(shipment);
 			var restResponse = await connection.Client.ExecuteAsync(connection.Request);
@@ -44,11 +46,12 @@ namespace Techdinamics.TechShip
 			return result;
 		}
 
-		public async Task<ShipmentResponse> Carrier(string duplicateHandling, ShipmentRequest shipment)
+		public async Task<ShipmentResponse> Carrier(DuplicateHandling duplicateHandling, ShipmentRequest shipment)
 		{
-			string route = $"create?duplicateHandling={duplicateHandling}";
-			var connection = GetConnection(route, Method.POST, shipment);
-			
+			var connection = GetConnection("create", Method.POST, shipment);
+			int duplicateHanlde = (int)duplicateHandling;
+			connection.Request.AddQueryParameter("duplicateHandling", duplicateHanlde.ToString());
+
 			var body = JsonConvert.SerializeObject(shipment);
 			var restResponse = await connection.Client.ExecuteAsync(connection.Request);
 
@@ -62,7 +65,7 @@ namespace Techdinamics.TechShip
 			return result;
 		}
 
-		public async Task<VoidShipment> Void(string shipmentId)
+		public async Task<VoidShipment> Void(long shipmentId)
 		{
 			string route = $"{shipmentId}/delete";
 			var connection = GetConnection<string>(route, Method.PUT);
@@ -96,7 +99,7 @@ namespace Techdinamics.TechShip
 			return result;
 		}
 
-		public List<ShipmentResponse> RateShopBatch(string duplicateHandling, ShipmentRequest[] shipments)
+		public List<ShipmentResponse> RateShopBatch(DuplicateHandling duplicateHandling, ShipmentRequest[] shipments)
 		{
 			try
 			{
@@ -114,7 +117,7 @@ namespace Techdinamics.TechShip
 			}
 		}
 
-		public List<ShipmentResponse> CarrierBatch(string duplicateHandling, ShipmentRequest[] shipments)
+		public List<ShipmentResponse> CarrierBatch(DuplicateHandling duplicateHandling, ShipmentRequest[] shipments)
 		{
 			try
 			{

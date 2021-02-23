@@ -22,4 +22,12 @@
 		CODREMITTANCELABEL,
 		PACKINGSLIP
 	}
+
+	public enum DuplicateHandling
+	{
+		Exception = 0,
+		Allow = 1,
+		Overwrite = 2,
+		OverwriteOpen = 3
+	}
 }
