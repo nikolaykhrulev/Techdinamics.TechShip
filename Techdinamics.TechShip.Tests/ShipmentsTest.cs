@@ -226,7 +226,6 @@ namespace Techdinamics.TechShip.Tests
 
 			var result = await new Shipments(_apiKey, _secretKey).Carrier(
 				duplicateHandling: "2",
-				cancelLabelAfter: "101",
 				shipment: shipment
 			);
 
@@ -281,7 +280,6 @@ namespace Techdinamics.TechShip.Tests
 			Assert.ThrowsExceptionAsync<ApplicationException>(
 				async () => await new Shipments(_apiKey, _secretKey).Carrier(
 					duplicateHandling: "2",
-					cancelLabelAfter: "101",
 					shipment: shipment
 				)
 			);
@@ -334,7 +332,6 @@ namespace Techdinamics.TechShip.Tests
 			Assert.ThrowsExceptionAsync<ApplicationException>(
 				async () => await new Shipments(_apiKey, _secretKey).Carrier(
 					duplicateHandling: "2",
-					cancelLabelAfter: "101",
 					shipment: shipment
 				)
 			);
@@ -346,7 +343,6 @@ namespace Techdinamics.TechShip.Tests
 			Assert.ThrowsExceptionAsync<ApplicationException>(
 				async () => await new Shipments(_apiKey, _secretKey).Carrier(
 					duplicateHandling: "2",
-					cancelLabelAfter: "101",
 					shipment: null
 				)
 			);
@@ -493,7 +489,6 @@ namespace Techdinamics.TechShip.Tests
 			}
 
 			var result = new Shipments(_apiKey, _secretKey).CarrierBatch(
-				cancelLabelAfter: "8",
 				duplicateHandling: "2",
 				shipments: shipments.ToArray()
 			);

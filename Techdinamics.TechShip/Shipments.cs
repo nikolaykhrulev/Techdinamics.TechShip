@@ -44,12 +44,11 @@ namespace Techdinamics.TechShip
 			return result;
 		}
 
-		public async Task<ShipmentResponse> Carrier(string cancelLabelAfter, string duplicateHandling, ShipmentRequest shipment)
+		public async Task<ShipmentResponse> Carrier(string duplicateHandling, ShipmentRequest shipment)
 		{
 			string route = $"create?duplicateHandling={duplicateHandling}";
 			var connection = GetConnection(route, Method.POST, shipment);
-			connection.Request.AddHeader("x-cancel-label-after", cancelLabelAfter);
-
+			
 			var body = JsonConvert.SerializeObject(shipment);
 			var restResponse = await connection.Client.ExecuteAsync(connection.Request);
 
@@ -115,14 +114,14 @@ namespace Techdinamics.TechShip
 			}
 		}
 
-		public List<ShipmentResponse> CarrierBatch(string cancelLabelAfter, string duplicateHandling, ShipmentRequest[] shipments)
+		public List<ShipmentResponse> CarrierBatch(string duplicateHandling, ShipmentRequest[] shipments)
 		{
 			try
 			{
 				var result = new List<ShipmentResponse>();
 				Parallel.ForEach(shipments, new ParallelOptions { MaxDegreeOfParallelism = _maxDegreeOfParallelism }, async (shipment) =>
 				{
-					result.Add(await Carrier(cancelLabelAfter, duplicateHandling, shipment));
+					result.Add(await Carrier(duplicateHandling, shipment));
 				});
 
 				return result;
